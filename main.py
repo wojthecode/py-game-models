@@ -17,16 +17,14 @@ def main() -> None:
                 defaults={"description": race_data.get("description")}
             )
 
-        # print(type(race), race)
-
-        for skill in race_data.get("skills", []):
-            Skill.objects.get_or_create(
-                name=skill.get("name"),
-                defaults={
-                    "bonus": skill.get("bonus"),
-                    "race": race
-                }
-            )
+            for skill in race_data.get("skills", []):
+                Skill.objects.get_or_create(
+                    name=skill.get("name"),
+                    defaults={
+                        "bonus": skill.get("bonus"),
+                        "race": race
+                    }
+                )
 
         guild_data = player.get("guild")
         guild = None
@@ -36,14 +34,14 @@ def main() -> None:
                 defaults={"description": guild_data.get("description")}
             )
 
-        # print(type(guild), guild)
-
-        Player.objects.create(
+        Player.objects.get_or_create(
             nickname=nickname,
-            email=player.get("email"),
-            bio=player.get("bio"),
-            race=race,
-            guild=guild if guild else None
+            defaults={
+                "email": player.get("email"),
+                "bio": player.get("bio"),
+                "race": race,
+                "guild": guild
+            }
         )
 
 
